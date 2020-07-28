@@ -1,10 +1,16 @@
-<div id="break-label"></div>
-<div id="session-label"></div>
-<button id="break-increment"></button>
-<button id="session-increment"></button>
-<button id="break-decrement"></button>
-<button id="session-decrement"></button>
-<div id="break-length">{{ breakLength }}</div>
-<div id="break-length">{{ sessionLength }}</div>
-<div id="timer-label"></div>
+<div id="break-label">Break Length</div>
+<div id="session-label">Session Length</div>
+<button id="break-decrement" (click)="changeTime(true, -60)">Break -</button>
+<button id="break-increment" (click)="changeTime(true, 60)">Break +</button>
+<button id="session-decrement" (click)="changeTime(false, -60)">
+  Session -
+</button>
+<button id="session-increment" (click)="changeTime(false, 60)">
+  Session +
+</button>
+<div id="break-length">{{ breakLength / 60 }}</div>
+<div id="session-length">{{ sessionLength / 60 }}</div>
+<div id="timer-label">Session</div>
 <div id="time-left">{{ timeLeft() }}</div>
+<button id="start_stop" (click)="changeTimerState()">Start/Stop</button>
+<button id="reset" (click)="reset()">Reset</button>
