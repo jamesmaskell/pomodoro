@@ -13,22 +13,28 @@ export class AppComponent {
   timerStateRunning: boolean = false;
   timer: any;
   currentState: string = 'Session';
-  timerLength: number;
+  timerLength: number = 1500;
   new: boolean = true;
+  timeLeftStr: string = '25:00';
 
   timeLeft() {
-    let seconds: string = (this.sessionLength % 60).toString();
-    let wholeMinutesLeftInSeconds = this.sessionLength - parseFloat(seconds);
+    let seconds: string = (this.timerLength % 60).toString();
+    let wholeMinutesLeftInSeconds = this.timerLength - parseFloat(seconds);
     let minutes = (wholeMinutesLeftInSeconds / 60).toString();
     if (minutes.length === 1) minutes = `0${minutes}`;
     if (seconds.length === 1) seconds = `0${seconds}`;
-    return `${minutes}:${seconds}`;
+    console.log(`${minutes}:${seconds}`);
+    this.timeLeftStr = `${minutes}:${seconds}`;
   }
 
   reset() {
+    if (this.timerStateRunning) this.changeTimerState();
     this.sessionLength = 1500;
     this.breakLength = 300;
     this.timerLength = 1500;
+    this.currentState = 'Session';
+    this.new = true;
+    this.timeLeft();
   }
 
   changeTime(isBreak: boolean, diff: number) {
@@ -49,27 +55,34 @@ export class AppComponent {
 
     if (this.new) {
       this.timerLength = this.sessionLength;
-      this.new = false;
     }
   }
 
   changeTimerState(): void {
+    this.new = false;
+
+    console.log(this.timerStateRunning);
+
     if (!this.timerStateRunning) {
+      console.log('run');
       this.timerStateRunning = true;
       this.timer = setInterval(() => {
         this.timerLength -= 1;
-        if (this.timerLength == 0 && this.currentState == 'Session') {
-          this.timerLength == this.breakLength;
+        if (this.timerLength == -1 && this.currentState == 'Session') {
+          this.timerLength = this.breakLength;
           this.currentState = 'Break';
         }
-        if (this.timerLength == 0 && this.currentState == 'Break') {
-          this.timerLength == this.sessionLength;
+        if (this.timerLength == -1 && this.currentState == 'Break') {
+          this.timerLength = this.sessionLength;
           this.currentState = 'Session';
         }
-      }, 1000);
+        this.timeLeft();
+      }, 250);
     } else {
       this.timerStateRunning = false;
       clearInterval(this.timer);
     }
+
+    console.log(this.timerStateRunning);
   }
 }

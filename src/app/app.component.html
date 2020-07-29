@@ -10,7 +10,7 @@
 </button>
 <div id="break-length">{{ breakLength / 60 }}</div>
 <div id="session-length">{{ sessionLength / 60 }}</div>
-<div id="timer-label">Session</div>
-<div id="time-left">{{ timeLeft() }}</div>
+<div id="timer-label">{{ currentState }}</div>
+<div id="time-left">{{ timeLeftStr }}</div>
 <button id="start_stop" (click)="changeTimerState()">Start/Stop</button>
 <button id="reset" (click)="reset()">Reset</button>
