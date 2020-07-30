@@ -19,29 +19,37 @@ export class AppComponent {
 
   timeLeft() {
     let seconds: string = (this.timerLength % 60).toString();
+    if (seconds.length === 1) seconds = `0${seconds}`;
+
     let wholeMinutesLeftInSeconds = this.timerLength - parseFloat(seconds);
     let minutes = (wholeMinutesLeftInSeconds / 60).toString();
     if (minutes.length === 1) minutes = `0${minutes}`;
-    if (seconds.length === 1) seconds = `0${seconds}`;
-    console.log(`${minutes}:${seconds}`);
+
     this.timeLeftStr = `${minutes}:${seconds}`;
   }
 
   reset() {
     if (this.timerStateRunning) this.changeTimerState();
+
     this.sessionLength = 1500;
     this.breakLength = 300;
     this.timerLength = 1500;
     this.currentState = 'Session';
+
     this.new = true;
+
     this.timeLeft();
+
+    this.alarmHandler(document.getElementById('beep'), true);
   }
 
   changeTime(isBreak: boolean, diff: number) {
     isBreak ? (this.breakLength += diff) : (this.sessionLength += diff);
+
     this.breakLength < 60
       ? (this.breakLength = 60)
       : (this.breakLength = this.breakLength);
+
     this.sessionLength < 60
       ? (this.sessionLength = 60)
       : (this.sessionLength = this.sessionLength);
@@ -49,6 +57,7 @@ export class AppComponent {
     this.breakLength > 3600
       ? (this.breakLength = 3600)
       : (this.breakLength = this.breakLength);
+
     this.sessionLength > 3600
       ? (this.sessionLength = 3600)
       : (this.sessionLength = this.sessionLength);
@@ -56,33 +65,43 @@ export class AppComponent {
     if (this.new) {
       this.timerLength = this.sessionLength;
     }
+
+    this.timeLeft();
   }
 
   changeTimerState(): void {
     this.new = false;
-
-    console.log(this.timerStateRunning);
-
     if (!this.timerStateRunning) {
-      console.log('run');
       this.timerStateRunning = true;
       this.timer = setInterval(() => {
         this.timerLength -= 1;
-        if (this.timerLength == -1 && this.currentState == 'Session') {
-          this.timerLength = this.breakLength;
-          this.currentState = 'Break';
-        }
-        if (this.timerLength == -1 && this.currentState == 'Break') {
-          this.timerLength = this.sessionLength;
-          this.currentState = 'Session';
+        if (this.timerLength == -1) {
+          if (this.currentState == 'Session') {
+            this.timerLength = this.breakLength;
+            this.currentState = 'Break';
+          } else {
+            this.timerLength = this.sessionLength;
+            this.currentState = 'Session';
+          }
+          this.alarmHandler(document.getElementById('beep'), false);
         }
         this.timeLeft();
-      }, 250);
+      }, 1000);
     } else {
       this.timerStateRunning = false;
       clearInterval(this.timer);
     }
+  }
 
-    console.log(this.timerStateRunning);
+  alarmHandler(element: HTMLElement, stop: boolean) {
+    let audio = <HTMLAudioElement>element;
+    if (!audio) return;
+
+    if (stop) {
+      audio.pause();
+      audio.currentTime = 0;
+    } else {
+      audio.play();
+    }
   }
 }
