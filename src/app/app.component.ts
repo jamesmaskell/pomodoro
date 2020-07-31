@@ -8,14 +8,17 @@ import { Component } from '@angular/core';
 export class AppComponent {
   title = 'pomodoro';
 
+  buttonLabels = ['Break -', 'Break +', 'Session -', 'Session +'];
+
   breakLength: number = 300;
   sessionLength: number = 1500;
+  timerLength: number = 1500;
+  timeLeftStr: string = '25:00';
+
   timerStateRunning: boolean = false;
   timer: any;
+
   currentState: string = 'Session';
-  timerLength: number = 1500;
-  new: boolean = true;
-  timeLeftStr: string = '25:00';
 
   timeLeft() {
     let seconds: string = (this.timerLength % 60).toString();
@@ -36,8 +39,6 @@ export class AppComponent {
     this.timerLength = 1500;
     this.currentState = 'Session';
 
-    this.new = true;
-
     this.timeLeft();
 
     this.alarmHandler(document.getElementById('beep'), true);
@@ -46,23 +47,28 @@ export class AppComponent {
   changeTime(isBreak: boolean, diff: number) {
     isBreak ? (this.breakLength += diff) : (this.sessionLength += diff);
 
-    this.breakLength < 60
-      ? (this.breakLength = 60)
-      : (this.breakLength = this.breakLength);
+    if (diff == -60) {
+      this.breakLength < 60
+        ? (this.breakLength = 60)
+        : (this.breakLength = this.breakLength);
 
-    this.sessionLength < 60
-      ? (this.sessionLength = 60)
-      : (this.sessionLength = this.sessionLength);
+      this.sessionLength < 60
+        ? (this.sessionLength = 60)
+        : (this.sessionLength = this.sessionLength);
+    } else {
+      this.breakLength > 3600
+        ? (this.breakLength = 3600)
+        : (this.breakLength = this.breakLength);
 
-    this.breakLength > 3600
-      ? (this.breakLength = 3600)
-      : (this.breakLength = this.breakLength);
+      this.sessionLength > 3600
+        ? (this.sessionLength = 3600)
+        : (this.sessionLength = this.sessionLength);
+    }
 
-    this.sessionLength > 3600
-      ? (this.sessionLength = 3600)
-      : (this.sessionLength = this.sessionLength);
-
-    if (this.new) {
+    if (
+      !this.timerStateRunning &&
+      this.timerLength + diff == this.sessionLength
+    ) {
       this.timerLength = this.sessionLength;
     }
 
@@ -70,7 +76,6 @@ export class AppComponent {
   }
 
   changeTimerState(): void {
-    this.new = false;
     if (!this.timerStateRunning) {
       this.timerStateRunning = true;
       this.timer = setInterval(() => {
