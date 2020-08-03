@@ -114,36 +114,4 @@ export class AppComponent {
       audio.play();
     }
   }
-
-  getCountdownPieStyle() {
-    let deg: number;
-    let lg: string = 'linear-gradient(90deg, #ff6347 50%, transparent 50%)';
-
-    if (this.timerLength > this._timerLength / 2) {
-      deg =
-        90 + (360 / this._timerLength) * (this._timerLength - this.timerLength);
-      lg = `linear-gradient(${deg}deg, transparent 50%, #ff6347 50%), ` + lg;
-    } else if (this.timerLength < this._timerLength / 2) {
-      deg =
-        90 +
-        (360 / this._timerLength) *
-          (this._timerLength - this.timerLength - this._timerLength / 2);
-      lg =
-        `linear-gradient(${deg}deg, transparent 50%, rgb(21, 27, 41) 50%), ` +
-        lg;
-    } else if (this.timerLength == 0) {
-      lg = 'none';
-    }
-
-    return { 'background-image': lg, transition: 'background-image 1s' };
-  }
-
-  /*
-  if (X > origX / 2) {
-    deg = 90 + ((360/OrigX) * X)
-  } 
-  if (X > origX / 2)
-  
-
-*/
 }

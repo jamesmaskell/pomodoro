@@ -1,72 +1,108 @@
-.container {
+$backgroundColor: rgb(21, 27, 41);
+$tomato: #ff6347;
+$componentFontFamily: "Open Sans Condensed", sans-serif;
+
+@mixin break-session($font-size, $width, $text-align) {
+  font-size: $font-size;
+  width: $width;
+  text-align: $text-align;
+}
+
+@mixin moveVerticalRelative($diff) {
+  position: relative;
+  top: $diff;
+}
+
+@mixin circle() {
+  border-radius: 50%;
+}
+
+@mixin centreElement() {
   margin: 0 auto;
-  width: 400px;
+}
+
+@mixin flexWithWidth(
+  $width,
+  $display,
+  $flexDirection,
+  $justifyContent,
+  $alignItems
+) {
+  width: $width;
+  display: $display;
+  flex-direction: $flexDirection;
+  justify-content: $justifyContent;
+  align-items: $alignItems;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100vh;
 }
 
 #break-label,
 #session-label {
-  font-size: 1.5em;
-  width: 50%;
-  text-align: center;
+  @include break-session(1.5em, 50%, center);
 }
+
 #break-length,
 #session-length {
-  font-size: 2em;
-  width: 26px;
-  text-align: center;
+  @include break-session(2em, 26px, center);
 }
 
 .button-wrapper {
-  width: 50%;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
+  @include flexWithWidth(50%, flex, row, center, center);
 }
 
 .meta-cont {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  justify-content: center;
-  align-items: center;
+  @include flexWithWidth(400px, flex, row, center, center);
+}
+
+.move-vertical {
+  @include moveVerticalRelative(-200px);
 }
 
 button {
-  background-color: rgb(21, 27, 41);
-  border: #ff6347 3px solid;
-  border-radius: 50%;
+  @include circle();
+
+  background-color: $backgroundColor;
+  border: $tomato 3px solid;
+  font-family: $componentFontFamily;
+  color: $tomato;
+
   width: 100px;
   height: 100px;
   margin: 10px;
-  font-family: "Open Sans Condensed", sans-serif;
+
   font-size: 1.5em;
-  color: #ff6347;
+  outline: none !important;
+
   &[id*="crement"] {
     width: 50px;
     height: 50px;
+    font-weight: bold;
   }
 }
 
 #timer {
-  background-color: rgb(21, 27, 41);
-  border-radius: 50%;
-  width: 200px;
+  @include flexWithWidth(200px, flex, column, center, center);
+  @include moveVerticalRelative(-203px);
+  @include centreElement();
+  @include circle();
+
+  background-color: $backgroundColor;
+  font-family: $componentFontFamily;
+
   height: 200px;
-  margin: 0 auto;
-  font-family: "Open Sans Condensed", sans-serif;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  top: -203px;
 }
 
 #time-left {
   text-align: center;
   font-size: 3em;
-  border-bottom: 1px solid #ff6347;
+  border-bottom: 1px solid $tomato;
 }
 
 #timer-label {
@@ -75,11 +111,13 @@ button {
 }
 
 #pie {
+  @include centreElement();
+  @include circle();
+
+  background-color: $backgroundColor;
+
   width: 206px;
   height: 206px;
   display: block;
-  border-radius: 50%;
-  background-color: rgb(21, 27, 41);
-  margin: 0 auto;
   z-index: -1;
 }
