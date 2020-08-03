@@ -1,48 +1,32 @@
 <div class="container">
-  <div>
-    <span id="break-label">Break Length: </span>
-    <span id="break-length">{{ breakLength / 60 }}</span>
+  <div class="meta-cont">
+    <div id="break-label">Break Length:</div>
+    <div id="session-label">Session Length:</div>
+  </div>
+  <div class="meta-cont">
+    <div class="button-wrapper">
+      <button id="break-decrement" (click)="changeTime(true, -60)">-</button>
+      <span id="break-length">{{ breakLength / 60 }}</span>
+      <button id="break-increment" (click)="changeTime(true, 60)">+</button>
+    </div>
+    <div class="button-wrapper">
+      <button id="session-decrement" (click)="changeTime(false, -60)">-</button>
+      <span id="session-length">{{ sessionLength / 60 }}</span>
+      <button id="session-increment" (click)="changeTime(false, 60)">+</button>
+    </div>
   </div>
   <div>
-    <span id="session-label">Session Length: </span>
-    <span id="session-length">{{ sessionLength / 60 }}</span>
+    <div id="pie" [ngStyle]="getCountdownPieStyle()"></div>
+    <div id="timer">
+      <div id="time-left">{{ timeLeftStr }}</div>
+      <div id="timer-label">{{ currentState }}</div>
+    </div>
   </div>
-  <button id="break-decrement" (click)="changeTime(true, -60)">Break -</button>
-  <button id="break-increment" (click)="changeTime(true, 60)">Break +</button>
-  <button id="session-decrement" (click)="changeTime(false, -60)">
-    Session -
-  </button>
-  <button id="session-increment" (click)="changeTime(false, 60)">
-    Session +
-  </button>
-  <br />
-  <app-increment-button
-    [elementId]="'break-decrement'"
-    [elementLabel]="'Break -'"
-    [maxValue]="3600"
-    [minValue]="60"
-  ></app-increment-button>
-  <app-increment-button
-    [elementId]="'break-increment'"
-    [elementLabel]="'Break +'"
-    [maxValue]="3600"
-    [minValue]="60"
-  ></app-increment-button>
-  <app-increment-button
-    [elementId]="'session-decrement'"
-    [elementLabel]="'Session -'"
-    [maxValue]="3600"
-    [minValue]="60"
-  ></app-increment-button>
-  <app-increment-button
-    [elementId]="'session-increment'"
-    [elementLabel]="'Session +'"
-    [maxValue]="3600"
-    [minValue]="60"
-  ></app-increment-button>
-  <div id="timer-label">{{ currentState }}</div>
-  <div id="time-left">{{ timeLeftStr }}</div>
-  <button id="start_stop" (click)="changeTimerState()">Start/Stop</button>
-  <button id="reset" (click)="reset()">Reset</button>
+  <div class="meta-cont">
+    <button id="start_stop" (click)="changeTimerState()">Start/Stop</button>
+    <button id="reset" (click)="reset()">Reset</button>
+  </div>
   <audio id="beep" src="./assets/alarm.mp3" hidden></audio>
+
+  <!--<div id="pie" class="ten"></div>-->
 </div>
