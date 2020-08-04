@@ -8,8 +8,6 @@ import { Component } from '@angular/core';
 export class AppComponent {
   title = 'pomodoro';
 
-  buttonLabels = ['Break -', 'Break +', 'Session -', 'Session +'];
-
   breakLength: number = 300;
   sessionLength: number = 1500;
   timerLength: number = 1500;

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-countdown-pie',
@@ -6,8 +6,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./countdown-pie.component.scss'],
 })
 export class CountdownPieComponent implements OnInit {
-  origTotalTime: number;
-  currentTime: number;
+  @Input() origTotalTime: number;
+  @Input() currentTime: number;
 
   constructor() {}
 

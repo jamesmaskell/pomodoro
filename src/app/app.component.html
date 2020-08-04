@@ -16,7 +16,10 @@
     </div>
   </div>
   <div>
-    <div id="pie" [ngStyle]="getCountdownPieStyle()"></div>
+    <app-countdown-pie
+      [origTotalTime]="_timerLength"
+      [currentTime]="timerLength"
+    ></app-countdown-pie>
     <div id="timer">
       <div id="time-left">{{ timeLeftStr }}</div>
       <div id="timer-label">{{ currentState }}</div>

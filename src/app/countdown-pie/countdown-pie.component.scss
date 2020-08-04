@@ -1,0 +1,21 @@
+$backgroundColor: rgb(21, 27, 41);
+
+@mixin circle() {
+  border-radius: 50%;
+}
+
+@mixin centreElement() {
+  margin: 0 auto;
+}
+
+#pie {
+  @include centreElement();
+  @include circle();
+
+  background-color: $backgroundColor;
+
+  width: 206px;
+  height: 206px;
+  display: block;
+  z-index: -1;
+}
